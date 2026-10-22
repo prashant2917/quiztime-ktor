@@ -19,6 +19,6 @@ fun Route.getAllQuizQuestions() {
             topicCode = 101
         )
 
-        call.respondText(question.toString()) // Respond with the quiz question as a string
+        call.respond(question) // Respond with the quiz question as a string
     }
 }

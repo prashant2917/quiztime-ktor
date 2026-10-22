@@ -6,6 +6,7 @@ import io.ktor.server.response.respondText
 import io.ktor.server.routing.get
 import io.ktor.server.routing.routing
 import presentation.config.configureRouting
+import presentation.config.configureSerialization
 
 fun main(args: Array<String>) {
     EngineMain.main(args)
@@ -13,4 +14,5 @@ fun main(args: Array<String>) {
 
 fun Application.module() {
    configureRouting()
+   configureSerialization()
 }
