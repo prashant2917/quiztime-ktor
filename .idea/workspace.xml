@@ -4,13 +4,23 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="49b2921c-31c9-4d80-9298-541e9d7ed7e5" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/kotlin/presentation/config/Serialization.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/domain/model/IssueReport.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/domain/model/IssueReport.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/domain/model/QuizQuestion.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/domain/model/QuizQuestion.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/domain/model/QuizTopic.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/domain/model/QuizTopic.kt" afterDir="false" />
+    <list default="true" id="49b2921c-31c9-4d80-9298-541e9d7ed7e5" name="Changes" comment="initial ktor configuration">
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/data/database/DatabaseFactory.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/data/repository/QuizQuestionRepositoryImpl.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/data/util/Constants.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/domain/repository/QuizQuestionRepository.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/presentation/config/Logging.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/presentation/routes/quiz_questions/deleteQuizQuestionById.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/presentation/routes/quiz_questions/getQuizQuestionById.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/presentation/routes/quiz_questions/upsertQuizQuestion.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/gradle.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/kotlin/presentation/Application.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/presentation/Application.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/presentation/config/Routing.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/presentation/config/Routing.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/kotlin/presentation/routes/quiz_questions/getAllQuizQuestions.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/presentation/routes/quiz_questions/getAllQuizQuestions.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/logback.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/logback.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/kotlin/ServerTest.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/kotlin/ServerTest.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -47,27 +57,29 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="Kotlin Class" />
         <option value="Kotlin Data Class" />
         <option value="Kotlin File" />
+        <option value="Kotlin Interface" />
+        <option value="Kotlin Class" />
+        <option value="Kotlin Object" />
       </list>
     </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
-  "lastFilter": {
-    "state": "OPEN",
-    "assignee": "prashant2917"
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;prashant2917&quot;
   }
-}]]></component>
-  <component name="GithubPullRequestsUISettings"><![CDATA[{
-  "selectedUrlAndAccountId": {
-    "url": "https://github.com/prashant2917/quiztime-ktor.git",
-    "accountId": "01f13a50-9127-461e-90c0-582fa14316d6"
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/prashant2917/quiztime-ktor.git&quot;,
+    &quot;accountId&quot;: &quot;01f13a50-9127-461e-90c0-582fa14316d6&quot;
   }
-}]]></component>
+}</component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 8,
   &quot;fromUser&quot;: false
@@ -97,6 +109,7 @@
     "Ktor.ApplicationKt.executor": "Run",
     "ModuleVcsDetector.initialDetectionPerformed": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
     "RunOnceActivity.typescript.service.memoryLimit.init": "true",
     "codeWithMe.voiceChat.enabledByDefault": "false",
     "copilot.chat.legacySessionMetadata.migrated": "true",
@@ -109,18 +122,10 @@
   }
 }]]></component>
   <component name="RunManager" selected="Ktor.ApplicationKt">
-    <configuration default="true" type="JetRunConfigurationType">
-      <module name="quiztime" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration default="true" type="KotlinStandaloneScriptRunConfigurationType">
-      <module name="quiztime" />
-      <option name="filePath" />
-      <method v="2" />
-    </configuration>
     <configuration name="ApplicationKt" type="KtorApplicationConfigurationType" factoryName="Ktor" temporary="true" nameIsGenerated="true">
+      <envs>
+        <env name="MONGO_URI" value="mongodb+srv://prashantfullstackdev_db_user:szo1Ul3AwTMTDRp0@swarajya-cluster.ropcqyr.mongodb.net/" />
+      </envs>
       <option name="MAIN_CLASS_NAME" value="presentation.ApplicationKt" />
       <module name="quiztime.main" />
       <extension name="coverage">
@@ -134,7 +139,7 @@
       <option name="includeProvidedScope" value="false" />
       <option name="mainClass" value="presentation.ApplicationKt" />
       <option name="passParentEnvs" value="true" />
-      <option name="programParameters" />
+      <option name="programParameters" value="" />
       <option name="shortenCommandLine" />
       <option name="vmParameters" />
       <option name="workingDirectory" value="$PROJECT_DIR$" />
@@ -158,6 +163,10 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <list>
+      <item itemvalue="Ktor.EngineMain" />
+      <item itemvalue="Ktor.ApplicationKt" />
+    </list>
     <recent_temporary>
       <list>
         <item itemvalue="Ktor.ApplicationKt" />
@@ -184,5 +193,9 @@
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="initial ktor configuration" />
+    <option name="LAST_COMMIT_MESSAGE" value="initial ktor configuration" />
   </component>
 </project>
