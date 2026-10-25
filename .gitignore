@@ -19,4 +19,4 @@
 local.properties
 .DS_Store
 *.hprof
-/.idea/
+.idea/
