@@ -4,51 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="49b2921c-31c9-4d80-9298-541e9d7ed7e5" name="Changes" comment="added mongodb and repository code">
-      <change afterPath="$PROJECT_DIR$/src/main/kotlin/data/database/entity/IssueReportEntity.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/kotlin/data/database/entity/QuizQuestionEntity.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/kotlin/data/database/entity/QuizTopicEntity.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/kotlin/data/mapper/IssueReportMapper.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/kotlin/data/mapper/QuizQuestionMapper.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/kotlin/data/mapper/QuizTopicMapper.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/kotlin/data/repository/IssueReportRepositoryImpl.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/kotlin/data/repository/QuizTopicRepositoryImpl.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/kotlin/di/KoinModule.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/kotlin/domain/repository/IssueReportRepository.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/kotlin/domain/repository/QuizTopicRepository.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/kotlin/domain/util/DataError.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/kotlin/domain/util/Error.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/kotlin/domain/util/Result.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/kotlin/presentation/config/Koin.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/kotlin/presentation/config/StatusPages.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/kotlin/presentation/config/Validation.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/kotlin/presentation/path/IssueReportRoutesPath.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/kotlin/presentation/path/QuizQuestionRoutesPath.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/kotlin/presentation/path/QuizTopicRoutesPath.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/kotlin/presentation/routes/IssueReportRoutes.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/kotlin/presentation/routes/quizQuestionRoutes.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/kotlin/presentation/routes/quizTopicRoutes.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/kotlin/presentation/util/respondWithError.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/kotlin/presentation/validator/ValidateIssueReport.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/kotlin/presentation/validator/ValidateQuizQuestion.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/kotlin/presentation/validator/validateQuizTopic.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/images/android.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/images/compose.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/images/general.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/images/kotlin.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/images/mixed.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/data/repository/QuizQuestionRepositoryImpl.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/data/repository/QuizQuestionRepositoryImpl.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/data/util/Constants.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/data/util/Constants.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/domain/repository/QuizQuestionRepository.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/domain/repository/QuizQuestionRepository.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/presentation/Application.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/presentation/Application.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/presentation/config/Routing.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/presentation/config/Routing.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/presentation/routes/quiz_questions/deleteQuizQuestionById.kt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/presentation/routes/quiz_questions/getAllQuizQuestions.kt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/presentation/routes/quiz_questions/getQuizQuestionById.kt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/presentation/routes/quiz_questions/upsertQuizQuestion.kt" beforeDir="false" />
-    </list>
+    <list default="true" id="49b2921c-31c9-4d80-9298-541e9d7ed7e5" name="Changes" comment="added code for quiz topic and issue report" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -229,6 +185,7 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="initial ktor configuration" />
     <MESSAGE value="added mongodb and repository code" />
-    <option name="LAST_COMMIT_MESSAGE" value="added mongodb and repository code" />
+    <MESSAGE value="added code for quiz topic and issue report" />
+    <option name="LAST_COMMIT_MESSAGE" value="added code for quiz topic and issue report" />
   </component>
 </project>
