@@ -1,37 +1,160 @@
 package data.repository
 
-import com.mongodb.kotlin.client.coroutine.MongoClient
+import com.mongodb.client.model.Aggregates
+import com.mongodb.client.model.Filters
+import com.mongodb.client.model.Updates
 import com.mongodb.kotlin.client.coroutine.MongoDatabase
+import data.database.entity.QuizQuestionEntity
+import data.mapper.toQuizQuestion
+import data.mapper.toQuizQuestionEntity
 import data.util.Constants.QUIZ_QUESTIONS_COLLECTION_NAME
 import domain.model.QuizQuestion
 import domain.repository.QuizQuestionRepository
+import domain.util.DataError
+import domain.util.Result
+import kotlinx.coroutines.flow.firstOrNull
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.toList
+import org.bson.conversions.Bson
 
-class QuizQuestionRepositoryImpl(mongoDatabase: MongoDatabase): QuizQuestionRepository {
+class QuizQuestionRepositoryImpl(mongoDatabase: MongoDatabase) : QuizQuestionRepository {
 
-    private val quizQuestions = mutableListOf<QuizQuestion>() // In-memory storage for quiz questions
-   private val questionCollection = mongoDatabase.getCollection<QuizQuestion>(QUIZ_QUESTIONS_COLLECTION_NAME)
-    override suspend fun upsertQuizQuestion(quizQuestion: QuizQuestion) {
-        questionCollection.insertOne(quizQuestion)
+    private val questionCollection = mongoDatabase.getCollection<QuizQuestionEntity>(QUIZ_QUESTIONS_COLLECTION_NAME)
+    override suspend fun upsertQuizQuestion(quizQuestion: QuizQuestion): Result<Unit, DataError> {
+        return try {
+            if (quizQuestion.id == null) {
+                questionCollection.insertOne(quizQuestion.toQuizQuestionEntity())
+            } else {
+                val filterQuery = Filters.eq(QuizQuestionEntity::_id.name, quizQuestion.id)
+                val updateQuery = Updates.combine(
+                    Updates.set(QuizQuestionEntity::question.name, quizQuestion.question),
+                    Updates.set(QuizQuestionEntity::correctAnswer.name, quizQuestion.correctAnswer),
+                    Updates.set(QuizQuestionEntity::incorrectAnswers.name, quizQuestion.incorrectAnswers),
+                    Updates.set(QuizQuestionEntity::explanation.name, quizQuestion.explanation),
+                    Updates.set(QuizQuestionEntity::topicCode.name, quizQuestion.topicCode)
+                )
+                val updatedResult = questionCollection.updateOne(filterQuery, updateQuery)
+                if (updatedResult.modifiedCount == 0L) {
+                    return Result.Failure(DataError.NotFound)
+                }
+            }
+            Result.Success(Unit)
+
+        } catch (e: Exception) {
+            e.printStackTrace()
+            Result.Failure(DataError.Database)
+        }
     }
 
     override suspend fun getAllQuizQuestions(
         topicCode: Int?,
+
+        ): Result<List<QuizQuestion>, DataError> {
+        return try {
+            // val questionLimit = limit?.takeIf { it > 0 } ?: 10 // Default limit to 10 if not provided or invalid
+            val filterQuery = topicCode?.let {
+
+                Filters.eq(QuizQuestionEntity::topicCode.name, it)
+            } ?: Filters.empty()
+            val questions = questionCollection.find(filterQuery)
+                // .limit(questionLimit)
+                .map { it.toQuizQuestion() }
+                .toList()
+            if (questions.isNotEmpty()) {
+                Result.Success(questions)
+            } else {
+                Result.Failure(DataError.NotFound)
+            }
+        } catch (e: Exception) {
+            Result.Failure(DataError.Database)
+        }
+    }
+
+    override suspend fun getQuizQuestionById(id: String?): Result<QuizQuestion, DataError> {
+        if (id.isNullOrBlank()) {
+            return Result.Failure(DataError.Validation)
+        }
+        return try {
+            val filterQuery = Filters.eq(QuizQuestionEntity::_id.name, id)
+            val questionEntity = questionCollection
+                .find(filter = filterQuery)
+                .firstOrNull()
+
+            if (questionEntity != null) {
+                val question = questionEntity.toQuizQuestion()
+                Result.Success(question)
+            } else {
+                Result.Failure(DataError.NotFound)
+            }
+
+        } catch (e: Exception) {
+            Result.Failure(DataError.Database)
+        }
+    }
+
+    override suspend fun deleteQuizQuestionById(id: String?): Result<Unit, DataError> {
+        if (id.isNullOrBlank()) {
+            return Result.Failure(DataError.Validation)
+        }
+        return try {
+            val filterQuery = Filters.eq(
+                QuizQuestionEntity::_id.name, id
+            )
+            val deleteResult = questionCollection
+                .deleteOne(filter = filterQuery)
+            if (deleteResult.deletedCount > 0) {
+                Result.Success(Unit)
+            } else {
+                Result.Failure(DataError.NotFound)
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+            Result.Failure(DataError.Database)
+        }
+    }
+
+    override suspend fun insertQuestionsInBulk(questions: List<QuizQuestion>): Result<Unit, DataError> {
+        return try {
+            val questionsEntity = questions.map { it.toQuizQuestionEntity() }
+            questionCollection.insertMany(questionsEntity)
+            Result.Success(Unit)
+        } catch (e: Exception) {
+            e.printStackTrace()
+            Result.Failure(DataError.Database)
+        }
+    }
+
+    override suspend fun getRandomQuestions(
+        topicCode: Int?,
         limit: Int?
-    ): List<QuizQuestion> {
-     return if(topicCode != null) {
-            quizQuestions.filter { it.topicCode == topicCode }
-                .take(limit ?: quizQuestions.size)
-        } else {
-            quizQuestions.take(limit ?: quizQuestions.size)
-        }// Limit the number of questions if limit is provided
+    ): Result<List<QuizQuestion>, DataError> {
+        return try {
+            val questionLimit = limit?.takeIf { it > 0 } ?: 10
+            val filterQuery = Filters.eq(
+                QuizQuestionEntity::topicCode.name, topicCode
+            )
+            val matchStage = if (topicCode == null || topicCode == 0) {
+                emptyList<Bson>()
+            } else {
+                listOf(Aggregates.match(filterQuery))
+            }
 
-    }
+            val pipeline = matchStage + Aggregates.sample(questionLimit)
 
-    override suspend fun getQuizQuestionById(id: String): QuizQuestion? {
-      return  quizQuestions.find { it.id == id }
-    }
+            val questions = questionCollection
+                .aggregate(pipeline)
+                .map { it.toQuizQuestion() }
+                .toList()
 
-    override suspend fun deleteQuizQuestionById(id: String): Boolean {
-       return quizQuestions.removeIf { it.id == id }
+            if (questions.isNotEmpty()) {
+                Result.Success(questions)
+            } else {
+                Result.Failure(DataError.NotFound)
+            }
+
+        } catch (e: Exception) {
+            e.printStackTrace()
+            Result.Failure(DataError.Database)
+        }
     }
 }
